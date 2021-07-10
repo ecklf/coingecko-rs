@@ -2,7 +2,7 @@
 #![warn(unused_extern_crates)]
 #![warn(unused_qualifications)]
 
-//! Coingecko is a Rust library for the CoinGecko API.
+//! Rust library for the CoinGecko API.
 //!
 //! # Installation
 //!
@@ -10,7 +10,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! coingecko = "0.0.1"
+//! coingecko-rs = "0.0.1"
 //! ```
 
 /// Client module
