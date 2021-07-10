@@ -659,7 +659,7 @@ impl CoinGeckoClient {
     ///     use coingecko::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.exchanges().await;
+    ///     client.exchanges(10, 1).await;
     /// }
     /// ```
     pub async fn exchanges(
@@ -729,7 +729,7 @@ impl CoinGeckoClient {
     ///     use coingecko::{params::TickersOrder, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.exchange_tickers("binance", "btc", true, 1, true, TickersOrder::TrustScoreAsc).await;
+    ///     client.exchange_tickers("binance", Some(vec!["btc"]), true, 1, TickersOrder::TrustScoreAsc, true).await;
     /// }
     /// ```
     pub async fn exchange_tickers(
@@ -928,7 +928,7 @@ impl CoinGeckoClient {
     ///     use coingecko::{params::DerivativesIncludeTickers, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.include_tickers(DerivativesIncludeTickers::All).await;
+    ///     client.derivatives(Some(DerivativesIncludeTickers::All)).await;
     /// }
     /// ```
     pub async fn derivatives(
@@ -957,7 +957,7 @@ impl CoinGeckoClient {
     ///     use coingecko::{params::DerivativeExchangeOrder, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.derivative_exchanges(DerivativeExchangeOrder::NameAsc).await;
+    ///     client.derivative_exchanges(DerivativeExchangeOrder::NameAsc, 10, 1).await;
     /// }
     /// ```
     pub async fn derivative_exchanges(
@@ -989,7 +989,7 @@ impl CoinGeckoClient {
     ///     use coingecko::{params::DerivativesIncludeTickers, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.derivatives_exchange("bitmex", DerivativesIncludeTickers::All).await;
+    ///     client.derivatives_exchange("bitmex", Some(DerivativesIncludeTickers::All)).await;
     /// }
     /// ```
     pub async fn derivatives_exchange(
@@ -1039,7 +1039,7 @@ impl CoinGeckoClient {
     ///     use coingecko::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.status_updates("general", "coin", 10, 1).await;
+    ///     client.status_updates(Some("general"), Some("coin"), 10, 1).await;
     /// }
     /// ```
     pub async fn status_updates(
@@ -1081,7 +1081,7 @@ impl CoinGeckoClient {
     ///     let from = NaiveDate::from_ymd(2021, 10, 7);
     ///     let to = NaiveDate::from_ymd(2022, 10, 7);
     ///
-    ///     client.events("HK", "Event", 1, true, from, to).await;
+    ///     client.events(Some("HK"), Some("Event"), 1, true, from, to).await;
     /// }
     /// ```
     pub async fn events(
@@ -1230,7 +1230,7 @@ impl CoinGeckoClient {
     ///     use coingecko::{params::CompaniesCoinId, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.companies(CompaniesCoinId:Bitcoin).await;
+    ///     client.companies(CompaniesCoinId::Bitcoin).await;
     /// }
     /// ```
     pub async fn companies(
