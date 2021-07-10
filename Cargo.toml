@@ -2,8 +2,14 @@
 name = "coingecko"
 version = "0.1.0"
 authors = ["ecklf <ecklf@icloud.com>"]
+description = "Rust library for the CoinGecko API."
+documentation = "https://docs.rs/coingecko"
+homepage = "https://github.com/ecklf/coingecko-rs"
 keywords = ["coingecko", "api"]
 edition = "2018"
+readme = "README.md"
+license = "MIT"
+include = ["src/**/*", "LICENSE.md", "README.md", "CHANGELOG.md"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
