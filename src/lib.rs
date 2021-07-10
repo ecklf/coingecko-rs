@@ -18,7 +18,7 @@ mod client;
 /// CoinGecko API Parameters
 pub mod params;
 /// Response structs for API requests
-mod response;
+pub mod response;
 /// CoinGecko Client
 pub use crate::client::CoinGeckoClient;
 
