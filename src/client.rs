@@ -42,7 +42,7 @@ pub struct CoinGeckoClient {
 /// # Examples
 ///
 /// ```rust
-/// use coingecko::CoinGeckoClient;
+/// use coingecko_rs::CoinGeckoClient;
 /// let client = CoinGeckoClient::default();
 /// ```
 impl Default for CoinGeckoClient {
@@ -57,7 +57,7 @@ impl CoinGeckoClient {
     /// # Examples
     ///
     /// ```rust
-    /// use coingecko::CoinGeckoClient;
+    /// use coingecko_rs::CoinGeckoClient;
     /// let client = CoinGeckoClient::new("https://some.url");
     /// ```
     pub fn new(host: &'static str) -> Self {
@@ -78,7 +78,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.ping().await;
@@ -95,7 +95,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.price(vec!["bitcoin", "ethereum"], vec!["usd"], true, true, true, true).await;
@@ -121,7 +121,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///     let uniswap_contract = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
     ///
@@ -157,7 +157,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.supported_vs_currencies().await;
@@ -176,7 +176,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.coins_list(true).await;
@@ -196,7 +196,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::{
+    ///     use coingecko_rs::{
     ///         params::{MarketsOrder, PriceChangePercentage},
     ///         CoinGeckoClient,
     ///     };
@@ -283,7 +283,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///     
     ///     client.coin("bitcoin", true, true, true, true, true, true).await;
@@ -315,7 +315,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::{params::TickersOrder, CoinGeckoClient};
+    ///     use coingecko_rs::{params::TickersOrder, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.coin_tickers("bitcoin", None, true, 1, TickersOrder::VolumeDesc, true).await;
@@ -352,7 +352,7 @@ impl CoinGeckoClient {
     /// #[tokio::main]
     /// async fn main() {
     ///     use chrono::NaiveDate;
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.coin_history("bitcoin", NaiveDate::from_ymd(2017, 12, 30), true).await;
@@ -382,7 +382,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.coin_market_chart("bitcoin", "usd", 1, true).await;
@@ -422,7 +422,7 @@ impl CoinGeckoClient {
     /// #[tokio::main]
     /// async fn main() {
     ///     use chrono::NaiveDate;
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     let from = NaiveDate::from_ymd(2014, 2, 16).and_hms(19, 0, 32);
@@ -455,7 +455,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///     client.coin_status_updates("qtum", 10, 1).await;
     /// }
@@ -486,7 +486,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::{params::OhlcDays, CoinGeckoClient};
+    ///     use coingecko_rs::{params::OhlcDays, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///     client.coin_ohlc("bitcoin", "usd", OhlcDays::OneDay).await;
     /// }
@@ -521,7 +521,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///     let uniswap_contract = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
     ///
@@ -540,7 +540,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///     let uniswap_contract = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
     ///
@@ -569,7 +569,7 @@ impl CoinGeckoClient {
     /// #[tokio::main]
     /// async fn main() {
     ///     use chrono::NaiveDate;
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///     let uniswap_contract = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
     ///
@@ -604,7 +604,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.asset_platforms().await;
@@ -621,7 +621,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.categories_list().await;
@@ -638,7 +638,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.categories().await;
@@ -655,7 +655,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.exchanges(10, 1).await;
@@ -679,7 +679,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.exchanges_list().await;
@@ -702,7 +702,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.exchange("binance").await;
@@ -725,7 +725,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::{params::TickersOrder, CoinGeckoClient};
+    ///     use coingecko_rs::{params::TickersOrder, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.exchange_tickers("binance", Some(vec!["btc"]), true, 1, TickersOrder::TrustScoreAsc, true).await;
@@ -762,7 +762,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.exchange_status_updates("binance", 10, 1).await;
@@ -789,7 +789,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.exchange_volume_chart("binance", 1).await;
@@ -811,7 +811,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.finance_platforms(10, 1).await;
@@ -837,7 +837,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.finance_products(10, 1).await;
@@ -863,7 +863,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.indexes(10, 1).await;
@@ -889,7 +889,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.indexes_market_id("binance_futures", "BTC").await;
@@ -907,7 +907,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.indexes_list().await;
@@ -924,7 +924,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::{params::DerivativesIncludeTickers, CoinGeckoClient};
+    ///     use coingecko_rs::{params::DerivativesIncludeTickers, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.derivatives(Some(DerivativesIncludeTickers::All)).await;
@@ -953,7 +953,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::{params::DerivativeExchangeOrder, CoinGeckoClient};
+    ///     use coingecko_rs::{params::DerivativeExchangeOrder, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.derivative_exchanges(DerivativeExchangeOrder::NameAsc, 10, 1).await;
@@ -985,7 +985,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::{params::DerivativesIncludeTickers, CoinGeckoClient};
+    ///     use coingecko_rs::{params::DerivativesIncludeTickers, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.derivatives_exchange("bitmex", Some(DerivativesIncludeTickers::All)).await;
@@ -1018,7 +1018,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.derivative_exchanges_list().await;
@@ -1035,7 +1035,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.status_updates(Some("general"), Some("coin"), 10, 1).await;
@@ -1074,7 +1074,7 @@ impl CoinGeckoClient {
     /// #[tokio::main]
     /// async fn main() {
     ///     use chrono::NaiveDate;
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     let from = NaiveDate::from_ymd(2021, 10, 7);
@@ -1124,7 +1124,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.event_countries().await;
@@ -1141,7 +1141,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.event_types().await;
@@ -1158,7 +1158,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.exchange_rates().await;
@@ -1175,7 +1175,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.trending().await;
@@ -1192,7 +1192,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.global().await;
@@ -1209,7 +1209,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::CoinGeckoClient;
+    ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.global_defi().await;
@@ -1226,7 +1226,7 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use coingecko::{params::CompaniesCoinId, CoinGeckoClient};
+    ///     use coingecko_rs::{params::CompaniesCoinId, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
     ///     client.companies(CompaniesCoinId::Bitcoin).await;
