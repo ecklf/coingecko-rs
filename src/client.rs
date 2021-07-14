@@ -37,7 +37,7 @@ pub struct CoinGeckoClient {
     host: &'static str,
 }
 
-/// Creates a new CoinGeckoClient client
+/// Creates a new CoinGeckoClient with host https://api.coingecko.com/api/v3
 ///
 /// # Examples
 ///
