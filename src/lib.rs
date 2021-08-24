@@ -46,7 +46,7 @@ mod tests {
         let client: CoinGeckoClient = CoinGeckoClient::default();
         let res = aw!(client.ping());
         assert!(res.is_ok(), "ping should resolve");
-        assert_eq!(res.unwrap().gecko_says, "(CoinGeckoClient) To the Moon!");
+        assert_eq!(res.unwrap().gecko_says, "(V3) To the Moon!");
     }
 
     // ---------------------------------------------
