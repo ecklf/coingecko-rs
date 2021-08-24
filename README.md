@@ -8,8 +8,13 @@ Add the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-coingecko-rs = "0.0.1"
+coingecko-rs = "0.1.3"
 ```
+
+## Features
+
+- Supports all API endpoints
+- Responses are fully typed using `serde_json`
 
 ## Documentation
 
