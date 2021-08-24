@@ -1,3 +1,4 @@
+#![allow(missing_docs)]
 use super::common::{ConvertedLast, ConvertedVolume};
 use serde::{Deserialize, Serialize};
 
