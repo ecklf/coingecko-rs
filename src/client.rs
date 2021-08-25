@@ -1,3 +1,4 @@
+#![allow(clippy::too_many_arguments)]
 use std::collections::HashMap;
 
 use chrono::{NaiveDate, NaiveDateTime};
@@ -251,14 +252,14 @@ impl CoinGeckoClient {
         let price_change_percentage = price_change_percentage.iter().fold(
             Vec::with_capacity(price_change_percentage.len()),
             |mut acc, x| {
-                let current = match x {
-                    &PriceChangePercentage::OneHour => "1h",
-                    &PriceChangePercentage::TwentyFourHours => "24h",
-                    &PriceChangePercentage::SevenDays => "7d",
-                    &PriceChangePercentage::FourteenDays => "14d",
-                    &PriceChangePercentage::ThirtyDays => "30d",
-                    &PriceChangePercentage::TwoHundredDays => "200d",
-                    &PriceChangePercentage::OneYear => "1y",
+                let current = match *x {
+                    PriceChangePercentage::OneHour => "1h",
+                    PriceChangePercentage::TwentyFourHours => "24h",
+                    PriceChangePercentage::SevenDays => "7d",
+                    PriceChangePercentage::FourteenDays => "14d",
+                    PriceChangePercentage::ThirtyDays => "30d",
+                    PriceChangePercentage::TwoHundredDays => "200d",
+                    PriceChangePercentage::OneYear => "1y",
                 };
 
                 acc.push(current);
@@ -661,11 +662,7 @@ impl CoinGeckoClient {
     ///     client.exchanges(10, 1).await;
     /// }
     /// ```
-    pub async fn exchanges(
-        &self,
-        per_page: i64,
-        page: i64,
-    ) -> Result<Vec<Exchange>, Error> {
+    pub async fn exchanges(&self, per_page: i64, page: i64) -> Result<Vec<Exchange>, Error> {
         let req = format!("/exchanges?per_page={}&page={}", per_page, page);
         self.get(&req).await
     }
@@ -745,10 +742,9 @@ impl CoinGeckoClient {
             TickersOrder::TrustScoreDesc => "trust_score_desc",
             TickersOrder::VolumeDesc => "volume_desc",
         };
-        
+
         let req = match coin_ids {
-           Some(c_ids) =>   
-            format!("/exchanges/{}/tickers?coin_ids={}&include_exchange_logo={}&page={}&order={}&depth={}", id, c_ids.join("%2C"), include_exchange_logo, &page, order, depth),
+           Some(c_ids) => format!("/exchanges/{}/tickers?coin_ids={}&include_exchange_logo={}&page={}&order={}&depth={}", id, c_ids.join("%2C"), include_exchange_logo, &page, order, depth),
             None => format!("/exchanges/{}/tickers?include_exchange_logo={}&page={}&order={}&depth={}", id, include_exchange_logo, &page, order, depth),
         };
 
@@ -822,10 +818,7 @@ impl CoinGeckoClient {
         per_page: i64,
         page: i64,
     ) -> Result<Vec<FinancePlatform>, Error> {
-        let req = format!(
-            "/finance_platforms?per_page={}&page={}",
-            per_page, page,
-        );
+        let req = format!("/finance_platforms?per_page={}&page={}", per_page, page,);
 
         self.get(&req).await
     }
@@ -848,10 +841,7 @@ impl CoinGeckoClient {
         per_page: i64,
         page: i64,
     ) -> Result<Vec<FinanceProduct>, Error> {
-        let req = format!(
-            "/finance_products?per_page={}&page={}",
-            per_page, page,
-        );
+        let req = format!("/finance_products?per_page={}&page={}", per_page, page,);
 
         self.get(&req).await
     }
@@ -869,15 +859,8 @@ impl CoinGeckoClient {
     ///     client.indexes(10, 1).await;
     /// }
     /// ```
-    pub async fn indexes(
-        &self,
-        per_page: i64,
-        page: i64,
-    ) -> Result<Vec<Index>, Error> {
-        let req = format!(
-            "/indexes?per_page={}&page={}",
-            per_page, page,
-        );
+    pub async fn indexes(&self, per_page: i64, page: i64) -> Result<Vec<Index>, Error> {
+        let req = format!("/indexes?per_page={}&page={}", per_page, page,);
 
         self.get(&req).await
     }
@@ -974,7 +957,10 @@ impl CoinGeckoClient {
             DerivativeExchangeOrder::TradeVolume24hBtcDesc => "trade_volume_24h_btc_desc",
         };
 
-        let req = format!("/derivatives/exchanges?order={}&per_page={}&page={}", order, per_page, page);
+        let req = format!(
+            "/derivatives/exchanges?order={}&per_page={}&page={}",
+            order, per_page, page
+        );
         self.get(&req).await
     }
 
@@ -1057,7 +1043,7 @@ impl CoinGeckoClient {
         if let Some(t) = project_type {
             params.push(format!("project_type={}", t));
         }
-        
+
         params.push(per_page.to_string());
         params.push(page.to_string());
 
@@ -1237,8 +1223,8 @@ impl CoinGeckoClient {
         coin_id: CompaniesCoinId,
     ) -> Result<CompaniesPublicTreasury, Error> {
         let req = match coin_id {
-            CompaniesCoinId::Bitcoin => format!("/companies/public_treasury/bitcoin"),
-            CompaniesCoinId::Ethereum => format!("/companies/public_treasury/ethereum"),
+            CompaniesCoinId::Bitcoin => "/companies/public_treasury/bitcoin".to_string(),
+            CompaniesCoinId::Ethereum => "/companies/public_treasury/ethereum".to_string(),
         };
 
         self.get(&req).await
