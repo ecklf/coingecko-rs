@@ -191,7 +191,10 @@ mod tests {
             false,
             vec![],
         ));
-        assert!(res2.is_ok(), "markets should resolve for pages near the end");
+        assert!(
+            res2.is_ok(),
+            "markets should resolve for pages near the end"
+        );
     }
 
     #[test]
