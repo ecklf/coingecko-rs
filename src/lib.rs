@@ -180,6 +180,18 @@ mod tests {
             ],
         ));
         assert!(res.is_ok(), "markets should resolve");
+
+        let res2 = aw!(client.coins_markets(
+            "usd",
+            vec![],
+            None,
+            MarketsOrder::MarketCapDesc,
+            250,
+            30,
+            false,
+            vec![],
+        ));
+        assert!(res2.is_ok(), "markets should resolve for pages near the end");
     }
 
     #[test]
