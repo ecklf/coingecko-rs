@@ -12,7 +12,7 @@ Add the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-coingecko-rs = "0.1.5"
+coingecko-rs = "0.2.0"
 ```
 
 ## Features
