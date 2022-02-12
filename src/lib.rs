@@ -154,7 +154,7 @@ mod tests {
         let client: CoinGeckoClient = CoinGeckoClient::default();
         let res = aw!(client.coins_list(true));
         assert!(res.is_ok(), "list should resolve");
-        assert!(res.unwrap().len() > 0, "should return at least one coin");
+        assert!(!res.unwrap().is_empty(), "should return at least one coin");
     }
 
     #[test]

@@ -373,7 +373,7 @@ pub struct Price {
     pub sats24_h_vol: Option<f64>,
     #[serde(rename = "sats_24h_change")]
     pub sats24_h_change: Option<f64>,
-    pub last_updated_at: Option<f64>,
+    pub last_updated_at: Option<u64>,
 }
 
 // ---------------------------------------------

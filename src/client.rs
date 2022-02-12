@@ -102,10 +102,10 @@ impl CoinGeckoClient {
     ///     client.price(&["bitcoin", "ethereum"], &["usd"], true, true, true, true).await;
     /// }
     /// ```
-    pub async fn price<T: AsRef<str>>(
+    pub async fn price<Id: AsRef<str>, Curr: AsRef<str>>(
         &self,
-        ids: &[T],
-        vs_currencies: &[T],
+        ids: &[Id],
+        vs_currencies: &[Curr],
         include_market_cap: bool,
         include_24hr_vol: bool,
         include_24hr_change: bool,
@@ -139,11 +139,11 @@ impl CoinGeckoClient {
     ///     ).await;
     /// }
     /// ```
-    pub async fn token_price<T: AsRef<str>>(
+    pub async fn token_price<Addr: AsRef<str>, Curr: AsRef<str>>(
         &self,
         id: &str,
-        contract_addresses: &[T],
-        vs_currencies: &[T],
+        contract_addresses: &[Addr],
+        vs_currencies: &[Curr],
         include_market_cap: bool,
         include_24hr_vol: bool,
         include_24hr_change: bool,
@@ -229,10 +229,10 @@ impl CoinGeckoClient {
     ///     ).await;
     /// }
     /// ```
-    pub async fn coins_markets<T: AsRef<str>>(
+    pub async fn coins_markets<Id: AsRef<str>>(
         &self,
         vs_currency: &str,
-        ids: &[T],
+        ids: &[Id],
         category: Option<&str>,
         order: MarketsOrder,
         per_page: i64,
@@ -331,10 +331,10 @@ impl CoinGeckoClient {
     ///     client.coin_tickers::<&str>("bitcoin", None, true, 1, TickersOrder::VolumeDesc, true).await;
     /// }
     /// ```
-    pub async fn coin_tickers<T: AsRef<str>>(
+    pub async fn coin_tickers<Ex: AsRef<str>>(
         &self,
         id: &str,
-        exchange_ids: Option<&[T]>,
+        exchange_ids: Option<&[Ex]>,
         include_exchange_logo: bool,
         page: i64,
         order: TickersOrder,
@@ -743,10 +743,10 @@ impl CoinGeckoClient {
     ///     client.exchange_tickers("binance", Some(&["btc"]), true, 1, TickersOrder::TrustScoreAsc, true).await;
     /// }
     /// ```
-    pub async fn exchange_tickers<T: AsRef<str>>(
+    pub async fn exchange_tickers<CoinId: AsRef<str>>(
         &self,
         id: &str,
-        coin_ids: Option<&[T]>,
+        coin_ids: Option<&[CoinId]>,
         include_exchange_logo: bool,
         page: i64,
         order: TickersOrder,
