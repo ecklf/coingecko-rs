@@ -29,7 +29,6 @@ mod tests {
         CoinGeckoClient,
     };
     use chrono::NaiveDate;
-    use std::vec;
 
     macro_rules! aw {
         ($e:expr) => {
@@ -55,7 +54,7 @@ mod tests {
     #[test]
     fn price() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
-        let res_1 = aw!(client.price(vec!["bitcoin"], vec!["usd"], true, true, true, true));
+        let res_1 = aw!(client.price(&["bitcoin"], &["usd"], true, true, true, true));
 
         assert!(res_1.is_ok(), "price should resolve");
         let price_1 = &res_1.unwrap()["bitcoin"];
@@ -77,7 +76,7 @@ mod tests {
             "usd last update should be defined"
         );
 
-        let res_2 = aw!(client.price(vec!["ethereum"], vec!["eur"], true, true, true, true));
+        let res_2 = aw!(client.price(&["ethereum"], &["eur"], true, true, true, true));
 
         assert!(res_2.is_ok(), "price should resolve");
         let price_2 = &res_2.unwrap()["ethereum"];
@@ -106,8 +105,8 @@ mod tests {
         let uniswap_contract = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
         let res = aw!(client.token_price(
             "ethereum",
-            vec![&uniswap_contract],
-            vec!["usd"],
+            &[&uniswap_contract],
+            &["usd"],
             true,
             true,
             true,
@@ -164,13 +163,13 @@ mod tests {
 
         let res = aw!(client.coins_markets(
             "usd",
-            vec!["bitcoin"],
+            &["bitcoin"],
             None,
             MarketsOrder::GeckoDesc,
             1,
             0,
             true,
-            vec![
+            &[
                 PriceChangePercentage::OneHour,
                 PriceChangePercentage::TwentyFourHours,
                 PriceChangePercentage::SevenDays,
@@ -183,13 +182,13 @@ mod tests {
 
         let res2 = aw!(client.coins_markets(
             "usd",
-            vec![],
+            &[],
             None,
             MarketsOrder::MarketCapDesc,
             250,
             30,
             false,
-            vec![],
+            &[],
         ));
         assert!(
             res2.is_ok(),
@@ -201,7 +200,15 @@ mod tests {
     fn coin() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
 
-        let res = aw!(client.coin("bitcoin", true, true, true, true, true, true));
+        // the response of client.coin is huge, we need a bigger thread stack size to handle it
+        let runtime = tokio::runtime::Builder::new_multi_thread()
+            .worker_threads(2)
+            .enable_all()
+            .thread_stack_size(10 * 1024 * 1024)
+            .build()
+            .unwrap();
+
+        let res = runtime.block_on(client.coin("bitcoin", true, true, true, true, true, true));
 
         assert!(res.is_ok(), "coins should resolve");
     }
@@ -217,7 +224,7 @@ mod tests {
 
         let res2 = aw!(client.coin_tickers(
             "bitcoin",
-            Some(vec!["binance"]),
+            Some(&["binance"]),
             true,
             1,
             TickersOrder::VolumeDesc,
@@ -228,7 +235,7 @@ mod tests {
 
         let res3 = aw!(client.coin_tickers(
             "bitcoin",
-            Some(vec!["binance"]),
+            Some(&["binance"]),
             true,
             1,
             TickersOrder::VolumeDesc,

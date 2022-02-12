@@ -99,13 +99,13 @@ impl CoinGeckoClient {
     ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.price(vec!["bitcoin", "ethereum"], vec!["usd"], true, true, true, true).await;
+    ///     client.price(&["bitcoin", "ethereum"], &["usd"], true, true, true, true).await;
     /// }
     /// ```
     pub async fn price(
         &self,
-        ids: Vec<&str>,
-        vs_currencies: Vec<&str>,
+        ids: &[&str],
+        vs_currencies: &[&str],
         include_market_cap: bool,
         include_24hr_vol: bool,
         include_24hr_change: bool,
@@ -128,8 +128,8 @@ impl CoinGeckoClient {
     ///
     ///     client.token_price(
     ///         "ethereum",
-    ///         vec![&uniswap_contract],
-    ///         vec!["usd"],
+    ///         &[uniswap_contract],
+    ///         &["usd"],
     ///         true,
     ///         true,
     ///         true,
@@ -140,8 +140,8 @@ impl CoinGeckoClient {
     pub async fn token_price(
         &self,
         id: &str,
-        contract_addresses: Vec<&str>,
-        vs_currencies: Vec<&str>,
+        contract_addresses: &[&str],
+        vs_currencies: &[&str],
         include_market_cap: bool,
         include_24hr_vol: bool,
         include_24hr_change: bool,
@@ -205,13 +205,13 @@ impl CoinGeckoClient {
     ///     
     ///     client.coins_markets(
     ///         "usd",
-    ///         vec!["bitcoin"],
+    ///         &["bitcoin"],
     ///         None,
     ///         MarketsOrder::GeckoDesc,
     ///         1,
     ///         0,
     ///         true,
-    ///         vec![
+    ///         &[
     ///             PriceChangePercentage::OneHour,
     ///             PriceChangePercentage::TwentyFourHours,
     ///             PriceChangePercentage::SevenDays,
@@ -225,13 +225,13 @@ impl CoinGeckoClient {
     pub async fn coins_markets(
         &self,
         vs_currency: &str,
-        ids: Vec<&str>,
+        ids: &[&str],
         category: Option<&str>,
         order: MarketsOrder,
         per_page: i64,
         page: i64,
         sparkline: bool,
-        price_change_percentage: Vec<PriceChangePercentage>,
+        price_change_percentage: &[PriceChangePercentage],
     ) -> Result<Vec<CoinsMarketItem>, Error> {
         let category = match category {
             Some(c) => format!("&category={}", c),
@@ -325,7 +325,7 @@ impl CoinGeckoClient {
     pub async fn coin_tickers(
         &self,
         id: &str,
-        exchange_ids: Option<Vec<&str>>,
+        exchange_ids: Option<&[&str]>,
         include_exchange_logo: bool,
         page: i64,
         order: TickersOrder,
@@ -725,13 +725,13 @@ impl CoinGeckoClient {
     ///     use coingecko_rs::{params::TickersOrder, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.exchange_tickers("binance", Some(vec!["btc"]), true, 1, TickersOrder::TrustScoreAsc, true).await;
+    ///     client.exchange_tickers("binance", Some(&["btc"]), true, 1, TickersOrder::TrustScoreAsc, true).await;
     /// }
     /// ```
     pub async fn exchange_tickers(
         &self,
         id: &str,
-        coin_ids: Option<Vec<&str>>,
+        coin_ids: Option<&[&str]>,
         include_exchange_logo: bool,
         page: i64,
         order: TickersOrder,
