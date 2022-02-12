@@ -105,7 +105,7 @@ mod tests {
         let uniswap_contract = "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984";
         let res = aw!(client.token_price(
             "ethereum",
-            &[&uniswap_contract],
+            &[uniswap_contract],
             &["usd"],
             true,
             true,
@@ -182,7 +182,7 @@ mod tests {
 
         let res2 = aw!(client.coins_markets(
             "usd",
-            &[],
+            &[] as &[&str],
             None,
             MarketsOrder::MarketCapDesc,
             250,
@@ -217,14 +217,21 @@ mod tests {
     fn coin_tickers() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
 
-        let res1 =
-            aw!(client.coin_tickers("bitcoin", None, true, 1, TickersOrder::VolumeDesc, true));
+        let res1 = aw!(client.coin_tickers::<&str>(
+            "bitcoin",
+            None,
+            true,
+            1,
+            TickersOrder::VolumeDesc,
+            true
+        ));
 
         assert!(res1.is_ok(), "tickers without filter should resolve");
 
         let res2 = aw!(client.coin_tickers(
             "bitcoin",
-            Some(&["binance"]),
+            #[allow(clippy::useless_vec)]
+            Some(&vec![String::from("binance")]), // &Vec<String> should also work
             true,
             1,
             TickersOrder::VolumeDesc,
