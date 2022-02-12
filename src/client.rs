@@ -99,18 +99,20 @@ impl CoinGeckoClient {
     ///     use coingecko_rs::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.price(vec!["bitcoin", "ethereum"], vec!["usd"], true, true, true, true).await;
+    ///     client.price(&["bitcoin", "ethereum"], &["usd"], true, true, true, true).await;
     /// }
     /// ```
-    pub async fn price(
+    pub async fn price<Id: AsRef<str>, Curr: AsRef<str>>(
         &self,
-        ids: Vec<&str>,
-        vs_currencies: Vec<&str>,
+        ids: &[Id],
+        vs_currencies: &[Curr],
         include_market_cap: bool,
         include_24hr_vol: bool,
         include_24hr_change: bool,
         include_last_updated_at: bool,
     ) -> Result<HashMap<String, Price>, Error> {
+        let ids = ids.iter().map(AsRef::as_ref).collect::<Vec<_>>();
+        let vs_currencies = vs_currencies.iter().map(AsRef::as_ref).collect::<Vec<_>>();
         let req = format!("/simple/price?ids={}&vs_currencies={}&include_market_cap={}&include_24hr_vol={}&include_24hr_change={}&include_last_updated_at={}", ids.join("%2C"), vs_currencies.join("%2C"), include_market_cap, include_24hr_vol, include_24hr_change, include_last_updated_at);
         self.get(&req).await
     }
@@ -128,8 +130,8 @@ impl CoinGeckoClient {
     ///
     ///     client.token_price(
     ///         "ethereum",
-    ///         vec![&uniswap_contract],
-    ///         vec!["usd"],
+    ///         &[uniswap_contract],
+    ///         &["usd"],
     ///         true,
     ///         true,
     ///         true,
@@ -137,16 +139,21 @@ impl CoinGeckoClient {
     ///     ).await;
     /// }
     /// ```
-    pub async fn token_price(
+    pub async fn token_price<Addr: AsRef<str>, Curr: AsRef<str>>(
         &self,
         id: &str,
-        contract_addresses: Vec<&str>,
-        vs_currencies: Vec<&str>,
+        contract_addresses: &[Addr],
+        vs_currencies: &[Curr],
         include_market_cap: bool,
         include_24hr_vol: bool,
         include_24hr_change: bool,
         include_last_updated_at: bool,
     ) -> Result<HashMap<String, Price>, Error> {
+        let contract_addresses = contract_addresses
+            .iter()
+            .map(AsRef::as_ref)
+            .collect::<Vec<_>>();
+        let vs_currencies = vs_currencies.iter().map(AsRef::as_ref).collect::<Vec<_>>();
         let req = format!("/simple/token_price/{}?contract_addresses={}&vs_currencies={}&include_market_cap={}&include_24hr_vol={}&include_24hr_change={}&include_last_updated_at={}", id, contract_addresses.join("%2C"), vs_currencies.join("%2C"), include_market_cap, include_24hr_vol, include_24hr_change, include_last_updated_at);
         self.get(&req).await
     }
@@ -205,13 +212,13 @@ impl CoinGeckoClient {
     ///     
     ///     client.coins_markets(
     ///         "usd",
-    ///         vec!["bitcoin"],
+    ///         &["bitcoin"],
     ///         None,
     ///         MarketsOrder::GeckoDesc,
     ///         1,
     ///         0,
     ///         true,
-    ///         vec![
+    ///         &[
     ///             PriceChangePercentage::OneHour,
     ///             PriceChangePercentage::TwentyFourHours,
     ///             PriceChangePercentage::SevenDays,
@@ -222,17 +229,19 @@ impl CoinGeckoClient {
     ///     ).await;
     /// }
     /// ```
-    pub async fn coins_markets(
+    pub async fn coins_markets<Id: AsRef<str>>(
         &self,
         vs_currency: &str,
-        ids: Vec<&str>,
+        ids: &[Id],
         category: Option<&str>,
         order: MarketsOrder,
         per_page: i64,
         page: i64,
         sparkline: bool,
-        price_change_percentage: Vec<PriceChangePercentage>,
+        price_change_percentage: &[PriceChangePercentage],
     ) -> Result<Vec<CoinsMarketItem>, Error> {
+        let ids = ids.iter().map(AsRef::as_ref).collect::<Vec<_>>();
+
         let category = match category {
             Some(c) => format!("&category={}", c),
             _ => String::from(""),
@@ -319,13 +328,13 @@ impl CoinGeckoClient {
     ///     use coingecko_rs::{params::TickersOrder, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.coin_tickers("bitcoin", None, true, 1, TickersOrder::VolumeDesc, true).await;
+    ///     client.coin_tickers::<&str>("bitcoin", None, true, 1, TickersOrder::VolumeDesc, true).await;
     /// }
     /// ```
-    pub async fn coin_tickers(
+    pub async fn coin_tickers<Ex: AsRef<str>>(
         &self,
         id: &str,
-        exchange_ids: Option<Vec<&str>>,
+        exchange_ids: Option<&[Ex]>,
         include_exchange_logo: bool,
         page: i64,
         order: TickersOrder,
@@ -338,8 +347,14 @@ impl CoinGeckoClient {
         };
 
         let req = match exchange_ids {
-            Some(e_ids) => format!("/coins/{}/tickers?exchange_ids={}&include_exchange_logo={}&page={}&order={}&depth={}", id, e_ids.join("%2C"), include_exchange_logo, &page, order, depth),
-            None => format!("/coins/{}/tickers?include_exchange_logo={}&page={}&order={}&depth={}", id, include_exchange_logo, &page, order, depth),
+            Some(e_ids) => {
+                let e_ids = e_ids.iter().map(AsRef::as_ref).collect::<Vec<_>>();
+                format!("/coins/{}/tickers?exchange_ids={}&include_exchange_logo={}&page={}&order={}&depth={}", id, e_ids.join("%2C"), include_exchange_logo, &page, order, depth)
+            }
+            None => format!(
+                "/coins/{}/tickers?include_exchange_logo={}&page={}&order={}&depth={}",
+                id, include_exchange_logo, &page, order, depth
+            ),
         };
 
         self.get(&req).await
@@ -725,13 +740,13 @@ impl CoinGeckoClient {
     ///     use coingecko_rs::{params::TickersOrder, CoinGeckoClient};
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.exchange_tickers("binance", Some(vec!["btc"]), true, 1, TickersOrder::TrustScoreAsc, true).await;
+    ///     client.exchange_tickers("binance", Some(&["btc"]), true, 1, TickersOrder::TrustScoreAsc, true).await;
     /// }
     /// ```
-    pub async fn exchange_tickers(
+    pub async fn exchange_tickers<CoinId: AsRef<str>>(
         &self,
         id: &str,
-        coin_ids: Option<Vec<&str>>,
+        coin_ids: Option<&[CoinId]>,
         include_exchange_logo: bool,
         page: i64,
         order: TickersOrder,
@@ -744,8 +759,14 @@ impl CoinGeckoClient {
         };
 
         let req = match coin_ids {
-           Some(c_ids) => format!("/exchanges/{}/tickers?coin_ids={}&include_exchange_logo={}&page={}&order={}&depth={}", id, c_ids.join("%2C"), include_exchange_logo, &page, order, depth),
-            None => format!("/exchanges/{}/tickers?include_exchange_logo={}&page={}&order={}&depth={}", id, include_exchange_logo, &page, order, depth),
+            Some(c_ids) => {
+                let c_ids = c_ids.iter().map(AsRef::as_ref).collect::<Vec<_>>();
+                format!("/exchanges/{}/tickers?coin_ids={}&include_exchange_logo={}&page={}&order={}&depth={}", id, c_ids.join("%2C"), include_exchange_logo, &page, order, depth)
+            }
+            None => format!(
+                "/exchanges/{}/tickers?include_exchange_logo={}&page={}&order={}&depth={}",
+                id, include_exchange_logo, &page, order, depth
+            ),
         };
 
         self.get(&req).await
