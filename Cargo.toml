@@ -1,11 +1,11 @@
 [package]
-name = "coingecko-rs"
+name = "coingecko"
 version = "1.0.0"
 authors = ["ecklf <ecklf@icloud.com>"]
 description = "Rust library for the CoinGecko V3 API"
 documentation = "https://docs.rs/coingecko"
 repository = "https://github.com/ecklf/coingecko-rs"
-keywords = ["coingecko", "api"]
+keywords = ["coingecko", "api", "cryptocurrency"]
 edition = "2021"
 readme = "README.md"
 license = "MIT"
