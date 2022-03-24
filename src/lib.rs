@@ -10,7 +10,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! coingecko-rs = "1.0.0"
+//! coingecko = "1.0.0"
 //! ```
 
 /// Client module

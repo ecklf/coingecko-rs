@@ -1,6 +1,6 @@
-# coingecko-rs
+# coingecko
 
-Rust library for the CoinGecko V3 API
+Rust library for the CoinGecko V3 API (formerly known as `coingecko-rs` crate)
 
 <p align="center">
     <img height="auto" width="300px" src="logo.png" />
@@ -12,7 +12,7 @@ Add the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-coingecko-rs = "1.0.0"
+coingecko = "1.0.0"
 ```
 
 ## Features
@@ -24,4 +24,4 @@ coingecko-rs = "1.0.0"
 
 ## Documentation
 
-[docs.rs](https://docs.rs/coingecko-rs)
+[docs.rs](https://docs.rs/coingecko)
