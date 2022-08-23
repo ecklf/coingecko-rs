@@ -408,7 +408,7 @@ impl CoinGeckoClient {
         &self,
         id: &str,
         vs_currency: &str,
-        days: i64,
+        days: &str,
         use_daily_interval: bool,
     ) -> Result<MarketChart, Error> {
         let req = match use_daily_interval {

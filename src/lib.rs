@@ -265,7 +265,7 @@ mod tests {
     fn coin_market_chart() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
 
-        let res = aw!(client.coin_market_chart("bitcoin", "usd", 1, true));
+        let res = aw!(client.coin_market_chart("bitcoin", "usd", "1", true));
 
         assert!(res.is_ok(), "market chart should resolve");
     }
