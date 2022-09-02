@@ -283,19 +283,6 @@ mod tests {
     }
 
     #[test]
-    fn coin_status_updates() {
-        let client: CoinGeckoClient = CoinGeckoClient::default();
-
-        let mock_per_page = 1;
-        let res = aw!(client.coin_status_updates("qtum", mock_per_page, 1));
-        assert!(res.is_ok(), "status updates should resolve");
-        assert!(
-            res.unwrap().status_updates.len() == mock_per_page as usize,
-            "status updates with set per_page should return exact amount of items"
-        );
-    }
-
-    #[test]
     fn coin_ohlc() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
 

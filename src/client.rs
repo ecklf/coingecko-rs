@@ -464,32 +464,6 @@ impl CoinGeckoClient {
         self.get(&req).await
     }
 
-    /// Get status updates for a given coin
-    ///
-    /// # Examples
-    ///
-    /// ```rust
-    /// #[tokio::main]
-    /// async fn main() {
-    ///     use coingecko_rs::CoinGeckoClient;
-    ///     let client = CoinGeckoClient::default();
-    ///     client.coin_status_updates("qtum", 10, 1).await;
-    /// }
-    /// ```
-    pub async fn coin_status_updates(
-        &self,
-        id: &str,
-        per_page: i64,
-        page: i64,
-    ) -> Result<StatusUpdates, Error> {
-        let req = format!(
-            "/coins/{}/status_updates?per_page={}&page={}",
-            id, per_page, page,
-        );
-
-        self.get(&req).await
-    }
-
     /// Get coin's OHLC
     ///
     /// Candle’s body:
