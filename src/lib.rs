@@ -141,7 +141,7 @@ mod tests {
 
         assert!(res.is_ok(), "supported_vs_currencies should resolve");
         assert!(
-            res.unwrap().len() > 0,
+            !res.unwrap().is_empty(),
             "should return at least one currency"
         );
     }
