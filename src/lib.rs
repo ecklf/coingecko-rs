@@ -141,7 +141,7 @@ mod tests {
 
         assert!(res.is_ok(), "supported_vs_currencies should resolve");
         assert!(
-            res.unwrap().len() > 0,
+            !res.unwrap().is_empty(),
             "should return at least one currency"
         );
     }
@@ -280,19 +280,6 @@ mod tests {
         let res = aw!(client.coin_market_chart_range("bitcoin", "usd", from, to));
 
         assert!(res.is_ok(), "market chart range should resolve");
-    }
-
-    #[test]
-    fn coin_status_updates() {
-        let client: CoinGeckoClient = CoinGeckoClient::default();
-
-        let mock_per_page = 1;
-        let res = aw!(client.coin_status_updates("qtum", mock_per_page, 1));
-        assert!(res.is_ok(), "status updates should resolve");
-        assert!(
-            res.unwrap().status_updates.len() == mock_per_page as usize,
-            "status updates with set per_page should return exact amount of items"
-        );
     }
 
     #[test]
