@@ -1600,7 +1600,7 @@ pub struct Contract {
     pub market_cap_rank: Value,
     pub coingecko_rank: i64,
     pub coingecko_score: f64,
-    pub developer_score: i64,
+    pub developer_score: Value,
     pub community_score: f64,
     pub liquidity_score: f64,
     pub public_interest_score: f64,
