@@ -1597,7 +1597,7 @@ pub struct Contract {
     pub contract_address: String,
     pub sentiment_votes_up_percentage: f64,
     pub sentiment_votes_down_percentage: f64,
-    pub market_cap_rank: i64,
+    pub market_cap_rank: Value,
     pub coingecko_rank: i64,
     pub coingecko_score: f64,
     pub developer_score: i64,
