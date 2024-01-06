@@ -66,7 +66,7 @@ impl CoinGeckoClient {
     }
 
     async fn get<R: DeserializeOwned>(&self, endpoint: &str) -> Result<R, Error> {
-        reqwest::get(format!("{host}/{ep}", host = self.host, ep = endpoint))
+        reqwest::get(format!("{host}{ep}", host = self.host, ep = endpoint))
             .await?
             .json()
             .await
