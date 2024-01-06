@@ -79,6 +79,12 @@ pub struct CoinsMarketItem {
     pub price_change_percentage7_d_in_currency: Option<f64>,
 }
 
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct DetailPlatform {
+    pub contract_address: String,
+    pub decimal_place: Option<i64>,
+}
+
 // ---------------------------------------------
 //  /coins/{id}
 // ---------------------------------------------
@@ -87,8 +93,10 @@ pub struct CoinsItem {
     pub id: String,
     pub symbol: String,
     pub name: String,
-    pub asset_platform_id: Value,
-    pub platforms: Option<HashMap<String, Option<String>>>,
+    pub web_slug: String,
+    pub asset_platform_id: Option<String>,
+    pub platforms: HashMap<String, String>,
+    pub detail_platforms: HashMap<String, DetailPlatform>,
     pub block_time_in_minutes: f64,
     pub hashing_algorithm: Value,
     pub categories: Vec<String>,
@@ -104,16 +112,16 @@ pub struct CoinsItem {
     pub sentiment_votes_up_percentage: Value,
     pub sentiment_votes_down_percentage: Value,
     pub market_cap_rank: Value,
-    pub coingecko_rank: Value,
-    pub coingecko_score: Value,
-    pub developer_score: Value,
-    pub community_score: Value,
-    pub liquidity_score: Value,
-    pub public_interest_score: Value,
+    // pub coingecko_rank: Value,
+    // pub coingecko_score: Value,
+    // pub developer_score: Value,
+    //pub community_score: Value,
+    //pub liquidity_score: Value,
+    //pub public_interest_score: Value,
     pub market_data: Option<MarketData>,
     pub community_data: Option<CommunityData>,
     pub developer_data: Option<DeveloperData>,
-    pub public_interest_stats: PublicInterestStats,
+    //pub public_interest_stats: PublicInterestStats,
     pub status_updates: Vec<Value>,
     pub last_updated: String,
     pub tickers: Option<Vec<Ticker>>,
@@ -1571,6 +1579,27 @@ pub struct MarketChart {
     pub prices: Vec<Vec<f64>>,
     pub market_caps: Vec<Vec<f64>>,
     pub total_volumes: Vec<Vec<f64>>,
+}
+
+// ---------------------------------------------
+//  /coins/top_gainers_losers?vs_currency={}&duration={}&top_coins={}
+// ---------------------------------------------
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TopGainerLoserCoin {
+    pub id: String,
+    pub symbol: String,
+    pub name: String,
+    pub image: String,
+    pub market_cap_rank: u32,
+    pub usd: f64,
+    pub usd_24h_vol: f64,
+    pub usd_24h_change: f64,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TopGainersLosers {
+    pub top_gainers: Vec<TopGainerLoserCoin>,
+    pub top_losers: Vec<TopGainerLoserCoin>,
 }
 
 // ---------------------------------------------

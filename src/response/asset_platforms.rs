@@ -7,4 +7,5 @@ pub struct AssetPlatform {
     pub chain_identifier: Option<i64>,
     pub name: String,
     pub shortname: String,
+    pub native_coin_id: String,
 }

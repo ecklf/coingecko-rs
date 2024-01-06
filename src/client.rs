@@ -10,6 +10,7 @@ use crate::params::{
     PriceChangePercentage, TickersOrder,
 };
 
+use crate::response::coins::TopGainersLosers;
 use crate::response::{
     asset_platforms::AssetPlatform,
     coins::{
@@ -33,9 +34,15 @@ use crate::response::{
     trending::Trending,
 };
 
+/// CoinGecko API URL
+pub const COINGECKO_API_DEMO_URL: &str = "https://api.coingecko.com/api/v3";
+pub const COINGECKO_API_PRO_URL: &str = "https://pro-api.coingecko.com/api/v3";
+
 /// CoinGecko client
 pub struct CoinGeckoClient {
     host: &'static str,
+    client: reqwest::Client,
+    api_key: Option<String>,
 }
 
 /// Creates a new CoinGeckoClient with host https://api.coingecko.com/api/v3
@@ -48,7 +55,12 @@ pub struct CoinGeckoClient {
 /// ```
 impl Default for CoinGeckoClient {
     fn default() -> Self {
-        CoinGeckoClient::new("https://api.coingecko.com/api/v3")
+        std::env::var("COINGECKO_PRO_API_KEY")
+            .map(CoinGeckoClient::new_with_pro_api_key)
+            .or_else(|_| {
+                std::env::var("COINGECKO_DEMO_API_KEY").map(CoinGeckoClient::new_with_demo_api_key)
+            })
+            .unwrap_or_else(|_| CoinGeckoClient::new(COINGECKO_API_DEMO_URL))
     }
 }
 
@@ -62,14 +74,82 @@ impl CoinGeckoClient {
     /// let client = CoinGeckoClient::new("https://some.url");
     /// ```
     pub fn new(host: &'static str) -> Self {
-        CoinGeckoClient { host }
+        CoinGeckoClient {
+            host,
+            client: reqwest::Client::new(),
+            api_key: None,
+        }
     }
 
-    async fn get<R: DeserializeOwned>(&self, endpoint: &str) -> Result<R, Error> {
-        reqwest::get(format!("{host}/{ep}", host = self.host, ep = endpoint))
-            .await?
-            .json()
-            .await
+    /// Creates a new CoinGeckoClient client with a custom host url and api key
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use coingecko::CoinGeckoClient;
+    /// let client = CoinGeckoClient::new_with_api_key("https://some.url", "x_cg_demo_api_key=some_api_key");
+    /// ```
+    pub fn new_with_demo_api_key(api_key: String) -> Self {
+        CoinGeckoClient {
+            host: COINGECKO_API_DEMO_URL,
+            client: reqwest::Client::new(),
+            api_key: Some(format!("x_cg_demo_api_key={}", api_key)),
+        }
+    }
+
+    /// Creates a new CoinGeckoClient client with a custom host url and api key
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use coingecko::CoinGeckoClient;
+    /// let client = CoinGeckoClient::new_with_api_key("https://some.url", "x_cg_demo_api_key=some_api_key");
+    /// ```
+    pub fn new_with_pro_api_key(api_key: String) -> Self {
+        CoinGeckoClient {
+            host: COINGECKO_API_PRO_URL,
+            client: reqwest::Client::new(),
+            api_key: Some(format!("x_cg_pro_api_key={}", api_key)),
+        }
+    }
+
+    /// Creates a new CoinGeckoClient client with a custom host url and api key
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// use coingecko::CoinGeckoClient;
+    /// let client = CoinGeckoClient::new_with_api_key("https://some.url", "x_cg_demo_api_key=some_api_key");
+    /// ```
+    pub fn new_with_api_key(host: &'static str, api_key: String) -> Self {
+        CoinGeckoClient {
+            host,
+            client: reqwest::Client::new(),
+            api_key: Some(api_key),
+        }
+    }
+
+    /// Send a GET request to the given endpoint
+    pub async fn get<R: DeserializeOwned>(&self, endpoint: &str) -> Result<R, Error> {
+        let host = self.host;
+        let slash = if endpoint.starts_with('/') { "" } else { "/" };
+
+        let api_key = if let Some(api_key) = &self.api_key {
+            let del = if endpoint.contains('?') { "&" } else { "?" };
+            format!("{del}{api_key}")
+        } else {
+            String::new()
+        };
+
+        let url = format!("{host}{slash}{endpoint}{api_key}");
+
+        let res = self.client.get(&url).send().await?;
+
+        if res.status().is_success() {
+            res.json().await
+        } else {
+            Err(res.error_for_status().unwrap_err())
+        }
     }
 
     /// Check API server status
@@ -193,6 +273,35 @@ impl CoinGeckoClient {
     pub async fn coins_list(&self, include_platform: bool) -> Result<Vec<CoinsListItem>, Error> {
         let req = format!("/coins/list?include_platform={}", include_platform);
         self.get(&req).await
+    }
+
+    /// List all supported coins id, name and symbol (no pagination required)
+    ///
+    /// Use this to obtain all the coins’ id in order to make API calls
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    /// #[tokio::main]
+    /// async fn main() {
+    ///     use coingecko::CoinGeckoClient;
+    ///     let client = CoinGeckoClient::default();
+    ///
+    ///     client.coins_list(true).await;
+    /// }
+    /// ```
+    pub async fn top_gainers_losers(
+        &self,
+        vs_currency: &str,
+        duration: &str,
+        top_coins: u32,
+    ) -> Result<TopGainersLosers, Error> {
+        let url = format!(
+            "/coins/top_gainers_losers?vs_currency={}&duration={}&top_coins={}",
+            vs_currency, duration, top_coins
+        );
+
+        self.get(&url).await
     }
 
     /// List all supported coins price, market cap, volume, and market related data
@@ -454,8 +563,8 @@ impl CoinGeckoClient {
         from: NaiveDateTime,
         to: NaiveDateTime,
     ) -> Result<MarketChart, Error> {
-        let from_unix_timestamp = from.timestamp();
-        let to_unix_timestamp = to.timestamp();
+        let from_unix_timestamp = from.and_utc().timestamp();
+        let to_unix_timestamp = to.and_utc().timestamp();
 
         let req = format!(
             "/coins/{}/market_chart/range?vs_currency={}&from={}&to={}",
@@ -577,8 +686,8 @@ impl CoinGeckoClient {
         from: NaiveDateTime,
         to: NaiveDateTime,
     ) -> Result<MarketChart, Error> {
-        let from_unix_timestamp = from.timestamp();
-        let to_unix_timestamp = to.timestamp();
+        let from_unix_timestamp = from.and_utc().timestamp();
+        let to_unix_timestamp = to.and_utc().timestamp();
 
         let req = format!(
             "/coins/{}/contract/{}/market_chart/range?vs_currency={}&from={}&to={}",
