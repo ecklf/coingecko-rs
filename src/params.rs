@@ -1,4 +1,7 @@
+use serde::{Deserialize, Serialize};
+
 /// Market display order for `coins_markets`
+#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
 pub enum MarketsOrder {
     /// Marketcap descending
     MarketCapDesc,
@@ -19,6 +22,7 @@ pub enum MarketsOrder {
 }
 
 /// Price change percentage times for `coins_markets`
+#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
 pub enum PriceChangePercentage {
     /// 1h
     OneHour,
@@ -37,6 +41,7 @@ pub enum PriceChangePercentage {
 }
 
 /// Tickers order for `coin_tickers` and `exchange_tickers`
+#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
 pub enum TickersOrder {
     /// Trust Score ascending
     TrustScoreAsc,
@@ -47,6 +52,7 @@ pub enum TickersOrder {
 }
 
 /// Ohlc times for `coin_ohlc`
+#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
 pub enum OhlcDays {
     /// 1d
     OneDay,
@@ -65,6 +71,7 @@ pub enum OhlcDays {
 }
 
 /// Tickers to include for `derivatives` and `derivatives_exchange`
+#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
 pub enum DerivativesIncludeTickers {
     /// All tickers
     All,
@@ -73,6 +80,7 @@ pub enum DerivativesIncludeTickers {
 }
 
 /// Order of exchanges for `derivative_exchanges`
+#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
 pub enum DerivativeExchangeOrder {
     /// Name ascending
     NameAsc,
@@ -89,6 +97,7 @@ pub enum DerivativeExchangeOrder {
 }
 
 /// IDs for coins held in treasury for `companies`
+#[derive(Deserialize, Serialize, Debug, Clone, Copy)]
 pub enum CompaniesCoinId {
     /// Bitcoin
     Bitcoin,

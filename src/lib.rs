@@ -20,7 +20,7 @@ pub mod params;
 /// Response structs for API requests
 pub mod response;
 /// CoinGecko Client
-pub use crate::client::CoinGeckoClient;
+pub use crate::client::{CoinGeckoClient, COINGECKO_API_DEMO_URL};
 
 #[cfg(test)]
 mod tests {
@@ -178,6 +178,7 @@ mod tests {
                 PriceChangePercentage::OneYear
             ],
         ));
+
         assert!(res.is_ok(), "markets should resolve");
 
         let res2 = aw!(client.coins_markets(
@@ -208,7 +209,7 @@ mod tests {
             .build()
             .unwrap();
 
-        let res = runtime.block_on(client.coin("bitcoin", true, true, true, true, true, true));
+        let res = runtime.block_on(client.coin("01coin", false, false, false, false, false, false));
 
         assert!(res.is_ok(), "coins should resolve");
     }
@@ -256,7 +257,11 @@ mod tests {
     fn coin_history() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
 
-        let res = aw!(client.coin_history("bitcoin", NaiveDate::from_ymd(2017, 12, 30), true));
+        let res = aw!(client.coin_history(
+            "bitcoin",
+            NaiveDate::from_ymd_opt(2017, 12, 30).unwrap(),
+            true
+        ));
 
         assert!(res.is_ok(), "history should resolve");
     }
