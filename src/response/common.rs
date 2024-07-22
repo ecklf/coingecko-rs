@@ -28,7 +28,7 @@ pub struct Localization {
     pub id: Option<String>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone)]
 pub struct Image {
     pub thumb: Option<String>,
     pub small: Option<String>,
@@ -276,13 +276,13 @@ pub struct CodeAdditionsDeletions4Weeks {
     pub deletions: Option<f64>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone)]
 pub struct Links {
     pub homepage: Vec<String>,
-    pub blockchain_site: Vec<String>,
+    pub blockchain_site: Vec<Value>,
     pub official_forum_url: Vec<String>,
-    pub chat_url: Vec<String>,
-    pub announcement_url: Vec<String>,
+    pub chat_url: Vec<Value>,
+    pub announcement_url: Vec<Value>,
     pub twitter_screen_name: Value,
     pub facebook_username: Value,
     pub bitcointalk_thread_identifier: Value,
@@ -291,7 +291,7 @@ pub struct Links {
     pub repos_url: ReposUrl,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone)]
 pub struct ReposUrl {
     pub github: Vec<String>,
     pub bitbucket: Vec<Value>,

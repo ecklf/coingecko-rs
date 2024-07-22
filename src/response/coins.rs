@@ -1,5 +1,5 @@
 #![allow(missing_docs)]
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 
@@ -88,7 +88,7 @@ pub struct DetailPlatform {
 // ---------------------------------------------
 //  /coins/{id}
 // ---------------------------------------------
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone)]
 pub struct CoinsItem {
     pub id: String,
     pub symbol: String,
@@ -106,7 +106,7 @@ pub struct CoinsItem {
     pub description: Description,
     pub links: Links,
     pub image: Image,
-    pub country_origin: String,
+    pub country_origin: Value,
     pub genesis_date: Value,
     pub contract_address: Option<String>,
     pub sentiment_votes_up_percentage: Value,
@@ -123,11 +123,11 @@ pub struct CoinsItem {
     pub developer_data: Option<DeveloperData>,
     //pub public_interest_stats: PublicInterestStats,
     pub status_updates: Vec<Value>,
-    pub last_updated: String,
+    pub last_updated: Value,
     pub tickers: Option<Vec<Ticker>>,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Default, Debug, Clone)]
 pub struct Description {
     pub en: Option<String>,
     pub de: Option<String>,
@@ -222,7 +222,7 @@ pub struct MarketData {
     pub circulating_supply: Value,
     #[serde(rename = "sparkline_7d")]
     pub sparkline7_d: Option<Sparkline7D>,
-    pub last_updated: String,
+    pub last_updated: Value,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

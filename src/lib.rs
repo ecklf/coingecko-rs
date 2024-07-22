@@ -24,6 +24,9 @@ pub use crate::client::{CoinGeckoClient, COINGECKO_API_DEMO_URL};
 
 #[cfg(test)]
 mod tests {
+    use std::thread;
+    use std::time::Duration;
+
     use crate::{
         params::{MarketsOrder, OhlcDays, PriceChangePercentage, TickersOrder},
         CoinGeckoClient,
@@ -197,21 +200,25 @@ mod tests {
         );
     }
 
-    #[test]
-    fn coin() {
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+    async fn coin() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
+        // Added a throttle for when public API is used to ensure we don't hit the rate limit
+        // assuming the slower default base case
+        const API_THROTTLE_TIME: u64 = 6;
 
-        // the response of client.coin is huge, we need a bigger thread stack size to handle it
-        let runtime = tokio::runtime::Builder::new_multi_thread()
-            .worker_threads(2)
-            .enable_all()
-            .thread_stack_size(10 * 1024 * 1024)
-            .build()
+        thread::sleep(Duration::from_secs(API_THROTTLE_TIME));
+        let res1 = client
+            .coin("01coin", false, false, false, false, false, false)
+            .await
             .unwrap();
-
-        let res = runtime.block_on(client.coin("01coin", false, false, false, false, false, false));
-
-        assert!(res.is_ok(), "coins should resolve");
+        assert_eq!(&res1.id, "01coin", "coin 01coin should resolve");
+        thread::sleep(Duration::from_secs(API_THROTTLE_TIME));
+        let res2 = client
+            .coin("0xaiswap", false, false, false, false, false, false)
+            .await
+            .unwrap();
+        assert_eq!(&res2.id, "0xaiswap", "coin 0xaiswap should resolve");
     }
 
     #[test]
