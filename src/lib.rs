@@ -24,8 +24,7 @@ pub use crate::client::{CoinGeckoClient, COINGECKO_API_DEMO_URL};
 
 #[cfg(test)]
 mod tests {
-    use std::thread;
-    use std::time::Duration;
+    use chrono::{self, Datelike};
 
     use crate::{
         params::{MarketsOrder, OhlcDays, PriceChangePercentage, TickersOrder},
@@ -205,15 +204,11 @@ mod tests {
         let client: CoinGeckoClient = CoinGeckoClient::default();
         // Added a throttle for when public API is used to ensure we don't hit the rate limit
         // assuming the slower default base case
-        const API_THROTTLE_TIME: u64 = 6;
-
-        thread::sleep(Duration::from_secs(API_THROTTLE_TIME));
         let res1 = client
             .coin("01coin", false, false, false, false, false, false)
             .await
             .unwrap();
         assert_eq!(&res1.id, "01coin", "coin 01coin should resolve");
-        thread::sleep(Duration::from_secs(API_THROTTLE_TIME));
         let res2 = client
             .coin("0xaiswap", false, false, false, false, false, false)
             .await
@@ -263,10 +258,11 @@ mod tests {
     #[test]
     fn coin_history() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
+        let current_date = chrono::Utc::now();
 
         let res = aw!(client.coin_history(
             "bitcoin",
-            NaiveDate::from_ymd_opt(2017, 12, 30).unwrap(),
+            NaiveDate::from_ymd_opt(current_date.year(), 12, 30).unwrap(),
             true
         ));
 
@@ -286,8 +282,23 @@ mod tests {
     fn coin_market_chart_range() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
 
-        let from = NaiveDate::from_ymd(2014, 2, 16).and_hms(19, 0, 32);
-        let to = NaiveDate::from_ymd(2015, 1, 30).and_hms(0, 20, 32);
+        let current_date = chrono::Utc::now();
+        let from = NaiveDate::from_ymd_opt(
+            current_date.year(),
+            current_date.month() - 1,
+            current_date.day(),
+        )
+        .unwrap()
+        .and_hms_opt(0, 0, 0)
+        .unwrap();
+        let to = NaiveDate::from_ymd_opt(
+            current_date.year(),
+            current_date.month(),
+            current_date.day(),
+        )
+        .unwrap()
+        .and_hms_opt(0, 0, 0)
+        .unwrap();
 
         let res = aw!(client.coin_market_chart_range("bitcoin", "usd", from, to));
 

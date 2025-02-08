@@ -481,7 +481,9 @@ impl CoinGeckoClient {
     ///     use coingecko::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.coin_history("bitcoin", NaiveDate::from_ymd(2017, 12, 30), true).await;
+    ///     let current_date = chrono::Utc::now();
+    ///     let year = current_date.year();
+    ///     client.coin_history("bitcoin", NaiveDate::from_ymd(year, 1, 1), true).await;
     /// }
     /// ```
     pub async fn coin_history(
