@@ -56,9 +56,10 @@ pub struct CoinGeckoClient {
 impl Default for CoinGeckoClient {
     fn default() -> Self {
         std::env::var("COINGECKO_PRO_API_KEY")
-            .map(CoinGeckoClient::new_with_pro_api_key)
+            .map(|k| CoinGeckoClient::new_with_pro_api_key(&k))
             .or_else(|_| {
-                std::env::var("COINGECKO_DEMO_API_KEY").map(CoinGeckoClient::new_with_demo_api_key)
+                std::env::var("COINGECKO_DEMO_API_KEY")
+                    .map(|k| CoinGeckoClient::new_with_demo_api_key(&k))
             })
             .unwrap_or_else(|_| CoinGeckoClient::new(COINGECKO_API_DEMO_URL))
     }
@@ -81,15 +82,15 @@ impl CoinGeckoClient {
         }
     }
 
-    /// Creates a new CoinGeckoClient client with a custom host url and api key
+    /// Creates a new CoinGeckoClient client with demo api key
     ///
     /// # Examples
     ///
     /// ```rust
     /// use coingecko::CoinGeckoClient;
-    /// let client = CoinGeckoClient::new_with_api_key("https://some.url", "x_cg_demo_api_key=some_api_key");
+    /// let client = CoinGeckoClient::new_with_demo_api_key("x_cg_demo_api_key=some_api_key");
     /// ```
-    pub fn new_with_demo_api_key(api_key: String) -> Self {
+    pub fn new_with_demo_api_key(api_key: &str) -> Self {
         CoinGeckoClient {
             host: COINGECKO_API_DEMO_URL,
             client: reqwest::Client::new(),
@@ -97,15 +98,15 @@ impl CoinGeckoClient {
         }
     }
 
-    /// Creates a new CoinGeckoClient client with a custom host url and api key
+    /// Creates a new CoinGeckoClient client with pro api key
     ///
     /// # Examples
     ///
     /// ```rust
     /// use coingecko::CoinGeckoClient;
-    /// let client = CoinGeckoClient::new_with_api_key("https://some.url", "x_cg_demo_api_key=some_api_key");
+    /// let client = CoinGeckoClient::new_with_pro_api_key("x_cg_demo_api_key=some_api_key");
     /// ```
-    pub fn new_with_pro_api_key(api_key: String) -> Self {
+    pub fn new_with_pro_api_key(api_key: &str) -> Self {
         CoinGeckoClient {
             host: COINGECKO_API_PRO_URL,
             client: reqwest::Client::new(),
@@ -121,11 +122,11 @@ impl CoinGeckoClient {
     /// use coingecko::CoinGeckoClient;
     /// let client = CoinGeckoClient::new_with_api_key("https://some.url", "x_cg_demo_api_key=some_api_key");
     /// ```
-    pub fn new_with_api_key(host: &'static str, api_key: String) -> Self {
+    pub fn new_with_api_key(host: &'static str, api_key: &str) -> Self {
         CoinGeckoClient {
             host,
             client: reqwest::Client::new(),
-            api_key: Some(api_key),
+            api_key: Some(api_key.to_owned()),
         }
     }
 
