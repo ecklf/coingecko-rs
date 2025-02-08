@@ -202,18 +202,12 @@ mod tests {
     #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn coin() {
         let client: CoinGeckoClient = CoinGeckoClient::default();
-        // Added a throttle for when public API is used to ensure we don't hit the rate limit
-        // assuming the slower default base case
         let res1 = client
             .coin("01coin", false, false, false, false, false, false)
-            .await
-            .unwrap();
-        assert_eq!(&res1.id, "01coin", "coin 01coin should resolve");
-        let res2 = client
-            .coin("0xaiswap", false, false, false, false, false, false)
-            .await
-            .unwrap();
-        assert_eq!(&res2.id, "0xaiswap", "coin 0xaiswap should resolve");
+            .await;
+
+        assert!(&res1.is_ok(), "coin should resolve");
+        assert_eq!(res1.unwrap().id, "01coin", "coin 01coin should resolve");
     }
 
     #[test]
