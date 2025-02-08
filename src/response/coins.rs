@@ -1558,10 +1558,10 @@ pub struct History {
     pub name: String,
     pub localization: Option<Localization>,
     pub image: Image,
-    pub market_data: HistoryMarketData,
-    pub community_data: CommunityData,
-    pub developer_data: DeveloperData,
-    pub public_interest_stats: PublicInterestStats,
+    pub market_data: Option<HistoryMarketData>,
+    pub community_data: Option<CommunityData>,
+    pub developer_data: Option<DeveloperData>,
+    pub public_interest_stats: Option<PublicInterestStats>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

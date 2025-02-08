@@ -477,11 +477,13 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use chrono::NaiveDate;
+    ///     use chrono::{NaiveDate, Datelike};
     ///     use coingecko::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     client.coin_history("bitcoin", NaiveDate::from_ymd(2017, 12, 30), true).await;
+    ///     let current_date = chrono::Utc::now();
+    ///     let year = current_date.year();
+    ///     client.coin_history("bitcoin", NaiveDate::from_ymd(year, 1, 1), true).await;
     /// }
     /// ```
     pub async fn coin_history(
@@ -547,12 +549,13 @@ impl CoinGeckoClient {
     /// ```rust
     /// #[tokio::main]
     /// async fn main() {
-    ///     use chrono::NaiveDate;
+    ///     use chrono::{NaiveDate, Datelike};
     ///     use coingecko::CoinGeckoClient;
     ///     let client = CoinGeckoClient::default();
     ///
-    ///     let from = NaiveDate::from_ymd(2014, 2, 16).and_hms(19, 0, 32);
-    ///     let to = NaiveDate::from_ymd(2015, 1, 30).and_hms(0, 20, 32);
+    ///     let current_date = chrono::Utc::now();
+    ///     let from = NaiveDate::from_ymd_opt(current_date.year(), current_date.month() - 1, current_date.day()).unwrap().and_hms_opt(0, 0, 0).unwrap();
+    ///     let to = NaiveDate::from_ymd_opt(current_date.year(), current_date.month(), current_date.day()).unwrap().and_hms_opt(0, 0, 0).unwrap();
     ///
     ///     client.coin_market_chart_range("bitcoin", "usd", from, to).await;
     /// }
