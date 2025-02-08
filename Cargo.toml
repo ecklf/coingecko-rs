@@ -1,6 +1,6 @@
 [package]
 name = "coingecko"
-version = "1.1.1"
+version = "1.1.2"
 authors = ["ecklf <ecklf@icloud.com>"]
 description = "Rust library for the CoinGecko V3 API"
 documentation = "https://docs.rs/coingecko"
