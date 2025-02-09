@@ -8,6 +8,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.3] - 2025-02-09
+
+Add `rustls-tls` feature
+
 ## [1.1.2] - 2025-02-08
 
 Fixes broken response types for contract item

@@ -12,7 +12,9 @@ Add the following to your `Cargo.toml` file:
 
 ```toml
 [dependencies]
-coingecko = "1.1.2"
+coingecko = "1.1.3"
+# If you want to use rustls-tls
+# coingecko = { version = "1.1.3", features = ["rustls-tls"] }
 ```
 
 ## Features
